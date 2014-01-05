@@ -1,3 +1,5 @@
+__author__ = "dannya"
+
 import datetime
 import json
 
@@ -15,14 +17,14 @@ from enzymeproject.feed import get_commits_feed
 app = Flask(__name__)
 
 
-@app.template_filter('humandate')
+@app.template_filter("humandate")
 def humandate(value):
     return humanize.naturaldate(value)
 
 
 @app.route("/")
 def index():
-    cache = memcache.Client(['127.0.0.1:11211'], debug=0)
+    cache = memcache.Client(["127.0.0.1:11211"], debug=0)
 
     # get most recent Enzyme and Commit-Digest commits from GitHub
     commits = cache.get("commits")
@@ -50,7 +52,7 @@ def index():
     if releases is None:
         # get recent releases, store in cache
         releases = []
-        request = requests.get('https://api.github.com/repos/dannyakakong/Enzyme/tags')
+        request = requests.get("https://api.github.com/repos/dannyakakong/Enzyme/tags")
 
         if (request.ok):
             releases = json.loads(request.content)
@@ -102,6 +104,6 @@ def index():
     )
 
 
-if __name__ == '__main__':
+if __name__ == "__main__":
     app.debug = True
     app.run()
