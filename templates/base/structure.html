@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <title>{{ product_name }}</title>
+
+        <meta name="description" content="A project-independent tool for creating regular project reports and assisting interesting statistical analysis." />
+        <meta name="keywords" content="enzyme, digest, open source, report, KDE" />
+        <meta name="viewport" content="width=device-width" />
+
+        <link href="http://fonts.googleapis.com/css?family=Open+Sans:400,400italic,700" rel="stylesheet" type="text/css" />
+        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+    </head>
+
+    <body>
+        {% block header %}{% endblock header %}
+
+        {% block content %}{% endblock content %}
+
+        {% block footer %}{% endblock footer %}
+
+        <script src="{{ url_for('static', filename='js/shadowbox.js') }}"></script>
+        <script src="{{ url_for('static', filename='js/all.js') }}"></script>
+    </body>
+</html>

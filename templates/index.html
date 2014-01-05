@@ -1,0 +1,161 @@
+{% extends "base/structure.html" %}
+
+{% block header %}
+    {% include "base/header.html" %}
+{% endblock header %}
+
+{% block content %}
+<div class="container">
+    <article class="hero">
+        <h1>
+            {{ product_name }}
+        </h1>
+
+        <p>
+            Enzyme is a project-independent tool for creating regular project reports
+            and assisting interesting statistical analysis, which is especially useful
+            for large software projects with a big developer base (eg. open source projects).
+        </p>
+
+        <p>
+            This project comprises two parts:
+        </p>
+        <ul>
+            <li>
+                <a href="{{ github_enzyme }}">Enzyme</a>: a web-based
+                platform used for collecting commits to a software project, which are then
+                filtered automatically and by volunteers, and matched with statistics to
+                produce weekly reports about development.
+            </li>
+            <li>
+                <a href="{{ github_digest }}">Commit-Digest</a>:
+                a frontend display tool which displays these weekly reports, as actively
+                used by websites like the <a href="{{ url_digest }}">KDE Commit-Digest</a>.
+            </li>
+        </ul>
+    </article>
+
+
+    <aside id="commits">
+        <h2>
+            <a href="{{ github_enzyme }}">
+                Recent Development
+                <span>on GitHub</span>
+            </a>
+        </h2>
+
+        <ul>
+        {% for commit in commits %}
+            <li>
+                <a href="{{ commit.url }}" target="_blank">
+                    <span class="message">{{ commit.message }}</span>
+                    <span class="date">{{ commit.date|humandate }}</span>
+                </a>
+            </li>
+        {% endfor %}
+        </ul>
+    </aside>
+
+
+    <article class="l-features">
+        <h2>
+            <a name="features">Features</a>
+        </h2>
+
+        <section>
+            <ul>
+                <li>
+                    Not tied to any source code revision control system - Enzyme
+                    has been used with both Subversion and Git (via IMAP email connector)
+                    through the use of the bundled connectors, and connectors for
+                    other systems can easily be written.
+                </li>
+                <li>
+                    Few dependencies - Enzyme only requires a web server with PHP
+                    (with APC module) and a MySQL database.
+                </li>
+                <li>
+                    Initial database creation and configuration wizard.
+                </li>
+                <li>
+                    Easy-to-use and efficient AJAX interface with keyboard shortcuts
+                    for reviewing and classifying commits.
+                </li>
+                <li>
+                    Volunteer job application system.
+                </li>
+                <li>
+                    Fully translatable interface, with many commonly-used world
+                    languages already available.
+                </li>
+                <li>
+                    Administration dashboard with useful information panels, such
+                    as currently logged in users.
+                </li>
+                <li>
+                    Automatically checks for updates to the Enzyme software.
+                </li>
+                <li>
+                    User management interface, with integrated job application display.
+                </li>
+                <li>
+                    Automated and secure password reset system.
+                </li>
+                <li>
+                    <i>and more...</i>
+                </li>
+            </ul>
+        </section>
+    </article>
+
+
+    <article class="l-download">
+        <h2>
+            <a name="download">Download + Contribute</a>
+        </h2>
+
+        <section>
+            <p>
+                The most recent Enzyme release is <b>{{ releases.0.name }}</b>
+                from {{ releases.0.date|humandate }} and is <a href="{{ releases.0.commit.url }}">available on GitHub</a>
+                or <a href="{{ releases.0.zipball_url }}">directly downloadable as a ZIP package</a>.
+            </p>
+
+            <p>
+                Contributions are most welcome via the public <a href="{{ github_enzyme }}">Enzyme GitHub account</a>.
+            </p>
+
+            <p>
+                Any questions regarding Enzyme development / installation / usage can be directed to <a href="mailto:danny@enzyme-project.org">danny@enzyme-project.org</a>.
+            </p>
+        </section>
+    </article>
+
+
+    <article class="l-screenshots">
+        <h2>
+            <a name="screenshots">Screenshots</a>
+            <span>of Enzyme v{{ screenshots.version }}</span>
+        </h2>
+
+        <section>
+            <ul>
+            {% for item in screenshots.elements %}
+                <li>
+                    <a href="{{ url_for('static', filename='img/screenshots/%s/%s.png' % (screenshots.version, item.0)) }}" target="_blank">
+                        <img src="{{ url_for('static', filename='img/screenshots/%s/thumbnails/%s.png' % (screenshots.version, item.0)) }}" alt="" width="300" />
+                    </a>
+
+                    <h3>{{ item.1 }}</h3>
+                    <p>{{ item.2 }}</p>
+                </li>
+            {% endfor %}
+            </ul>
+        </section>
+    </article>
+</div>
+{% endblock content %}
+
+{% block footer %}
+    {% include "base/footer.html" %}
+{% endblock footer %}
