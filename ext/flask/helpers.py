@@ -329,7 +329,7 @@ def url_for(endpoint, **values):
 
         # use a subdomain?
         if subdomain:
-            if current_app.config['LIVE'] and current_app.config['DEBUG']:
+            if current_app.config['DEBUG'] and is_live:
                 url = current_app.config['LIVE'][:-1]
             else:
                 url = request.url[:-1]
