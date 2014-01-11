@@ -3,7 +3,7 @@ __author__ = "dannya"
 import datetime
 import json
 
-from flask import (
+from ext.flask import (
     Flask, render_template,
 )
 
@@ -15,6 +15,12 @@ from enzymeproject.feed import get_commits_feed
 
 
 app = Flask(__name__)
+app.config["LIVE"] = True
+app.config["STATIC_CDN"] = ["s0", "s1", "s2", "s3", "s4", "s5"]
+app.config["STATIC_MINIFY_FILENAME"] = {
+    ".js": ".min.js",
+    ".css": ".min.css",
+}
 
 
 @app.template_filter("humandate")
