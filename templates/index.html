@@ -142,8 +142,8 @@
             <ul>
             {% for item in screenshots.elements %}
                 <li>
-                    <a href="{{ url_for('static', filename='img/screenshots/%s/%s.png' % (screenshots.version, item.0)) }}" target="_blank">
-                        <img src="{{ url_for('static', filename='img/screenshots/%s/thumbnails/%s.png' % (screenshots.version, item.0)) }}" alt="" width="300" />
+                    <a href="{{ url_for('static', filename='img/screenshots/{0}/{1}.png'.format(screenshots.version, item.0), subdomain='s{0}'.format((loop.index % 2) + 2)) }}" target="_blank">
+                        <img src="{{ url_for('static', filename='img/screenshots/{0}/thumbnails/{1}.png'.format(screenshots.version, item.0), subdomain='s{0}'.format((loop.index % 2) + 2)) }}" alt="" width="300" />
                     </a>
 
                     <h3>{{ item.1 }}</h3>

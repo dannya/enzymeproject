@@ -290,6 +290,9 @@ def url_for(endpoint, **values):
                                'the SERVER_NAME config variable.')
         external = values.pop('_external', True)
 
+    # use a subdomain?
+    subdomain = values.pop('subdomain', None)
+
     anchor = values.pop('_anchor', None)
     method = values.pop('_method', None)
     scheme = values.pop('_scheme', None)
@@ -314,21 +317,27 @@ def url_for(endpoint, **values):
     if anchor is not None:
         rv += '#' + url_quote(anchor)
 
+
     # make live environment modifications
-    if not current_app.config['DEBUG'] or current_app.config['LIVE']:
-        # use minified files
+    is_live = ('LIVE' in current_app.config) and current_app.config['LIVE']
+
+    if not current_app.config['DEBUG'] or is_live:
+        # use minified files?
         if current_app.config['STATIC_MINIFY_FILENAME']:
             for key, value in current_app.config['STATIC_MINIFY_FILENAME'].items():
                 rv = rv.replace(key, value)
 
-        # CDN
-        if not current_app.config['DEBUG'] and current_app.config['STATIC_CDN']:
-            from random import choice
+        # use a subdomain?
+        if subdomain:
+            if current_app.config['LIVE'] and current_app.config['DEBUG']:
+                url = current_app.config['LIVE'][:-1]
+            else:
+                url = request.url[:-1]
 
-            rv = request.url.replace(
+            rv = url.replace(
                 '://',
-                '://{0}.'.format(choice(current_app.config['STATIC_CDN'])),
-            )
+                '://{0}.'.format(subdomain),
+            ) + rv
 
     return rv
 
