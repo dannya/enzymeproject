@@ -6,11 +6,23 @@ import xml.etree.ElementTree as ET
 from datetime import timedelta, datetime
 
 
-def parse_date(datestring):
-    return (
-        datetime.strptime(datestring[:-6].replace("T", " "), "%Y-%m-%d %H:%M:%S") +
-        timedelta(hours=int(datestring[-6:-3]))
-    )
+def parse_date(date_string):
+    try:
+        # get pure date string without timezone information
+        pure_date = date_string.replace("T", " ").replace("Z", " ").strip()[0:19]
+
+        return (
+            datetime.strptime(
+                pure_date,
+                "%Y-%m-%d %H:%M:%S"
+            ) +
+            timedelta(
+                hours=int(pure_date[-8:-6])
+            )
+        )
+
+    except ValueError:
+        return None
 
 
 def get_commits_feed(feed_url, limit=None):
