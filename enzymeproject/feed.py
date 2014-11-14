@@ -37,14 +37,19 @@ def get_commits_feed(feed_url, limit=None):
     # iterate and process into usable data structure
     commits = []
     for entry in entries:
-        commits.append({
-            "date":     parse_date(entry.find("{http://www.w3.org/2005/Atom}updated").text),
-            "author":   {
-                "name": entry.find(".//{http://www.w3.org/2005/Atom}author/{http://www.w3.org/2005/Atom}name").text,
-                "url": entry.find(".//{http://www.w3.org/2005/Atom}author/{http://www.w3.org/2005/Atom}uri").text,
-            },
-            "url":      entry.find("{http://www.w3.org/2005/Atom}link").attrib["href"],
-            "message":  entry.find("{http://www.w3.org/2005/Atom}title").text,
-        })
+        try:
+            commits.append({
+                "date":     parse_date(entry.find("{http://www.w3.org/2005/Atom}updated").text),
+                "author":   {
+                    "name": entry.find(".//{http://www.w3.org/2005/Atom}author/{http://www.w3.org/2005/Atom}name").text,
+                    "url": entry.find(".//{http://www.w3.org/2005/Atom}author/{http://www.w3.org/2005/Atom}uri").text,
+                },
+                "url":      entry.find("{http://www.w3.org/2005/Atom}link").attrib["href"],
+                "message":  entry.find("{http://www.w3.org/2005/Atom}title").text,
+            })
+
+        except AttributeError:
+            # if the commit item does not have an attribute, ignore it
+            pass
 
     return commits
