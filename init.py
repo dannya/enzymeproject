@@ -1,15 +1,14 @@
 __author__ = "dannya"
 
 import datetime
+import humanize
 import json
+import requests
+from memcache import memcache
 
-from ext.flask import (
+from flask import (
     Flask, render_template,
 )
-
-from ext import humanize
-from ext import requests
-from ext.memcache import memcache
 
 from enzymeproject.feed import get_commits_feed
 
