@@ -67,7 +67,6 @@ window.enzymeproject.ui = {
 };
 
 
-
 // onload...
 document.addEventListener('DOMContentLoaded', function () {
     // make header links scroll to position

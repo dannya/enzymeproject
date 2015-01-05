@@ -1,0 +1,60 @@
+div.screen {
+    span {
+        display none
+        position fixed
+        top 0
+        right 0
+        padding 4px
+        z-index 2000
+        font-family monospace
+        font-weight bold
+    }
+
+    @media screen_tiny_only {
+        .screen_tiny {
+            display block
+            background white
+            color black
+        }
+    }
+
+    @media screen_mini_only {
+        .screen_mini {
+            display block
+            background lightgoldenrodyellow
+            color black
+        }
+    }
+
+    @media screen_mobile_only {
+        .screen_mobile {
+            display block
+            background yellow
+            color black
+        }
+    }
+
+    @media screen_small_only {
+        .screen_small {
+            display block
+            background orange
+            color black
+        }
+    }
+
+    @media screen_medium_only {
+        .screen_medium {
+            display block
+            background red
+            color white
+        }
+    }
+
+    @media screen_large_only {
+        .screen_large {
+            display block
+            background purple
+            color white
+        }
+    }
+}

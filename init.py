@@ -14,10 +14,15 @@ from enzymeproject.feed import get_commits_feed
 
 
 app = Flask(__name__)
+app.config["TESTING"] = False
 app.config["STATIC_MINIFY_FILENAME"] = {
-    ".js": ".min.js",
-    ".css": ".min.css",
+    "js/":  "js/min/",
+    "css/": "css/min/",
 }
+
+# set template directory (original vs. minified)
+if not app.config["TESTING"]:
+    app.template_folder += "/min"
 
 
 @app.template_filter("humandate")
@@ -74,7 +79,7 @@ def index():
             "site_url":         "http://enzyme-project.org/",
             "product_name":     "Enzyme Project",
             "copyright": (
-                2010, 2014
+                2010, 2015
             ),
 
             "github_enzyme":    "https://github.com/dannyakakong/Enzyme",
@@ -108,5 +113,5 @@ def index():
 
 
 if __name__ == "__main__":
-    app.debug = True
+    app.debug = app.config["TESTING"]
     app.run()
