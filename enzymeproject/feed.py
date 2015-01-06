@@ -38,17 +38,27 @@ def get_commits_feed(feed_url, limit=None):
     commits = []
     for entry in entries:
         try:
+            # parse the author data separately, as it can sometimes be empty,
+            # and is not essential to be extracted
+            try:
+                author = {
+                    "name": entry.find(".//{http://www.w3.org/2005/Atom}author/{http://www.w3.org/2005/Atom}name").text,
+                    "url":  entry.find(".//{http://www.w3.org/2005/Atom}author/{http://www.w3.org/2005/Atom}uri").text,
+                }
+            except AttributeError:
+                author = {
+                    "name": "",
+                    "url":  "",
+                }
+
             commits.append({
                 "date":     parse_date(entry.find("{http://www.w3.org/2005/Atom}updated").text),
-                "author":   {
-                    "name": entry.find(".//{http://www.w3.org/2005/Atom}author/{http://www.w3.org/2005/Atom}name").text,
-                    "url": entry.find(".//{http://www.w3.org/2005/Atom}author/{http://www.w3.org/2005/Atom}uri").text,
-                },
+                "author":   author,
                 "url":      entry.find("{http://www.w3.org/2005/Atom}link").attrib["href"],
                 "message":  entry.find("{http://www.w3.org/2005/Atom}title").text,
             })
 
-        except AttributeError:
+        except AttributeError as e:
             # if the commit item does not have an attribute, ignore it
             pass
 
