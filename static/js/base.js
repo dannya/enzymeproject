@@ -86,9 +86,52 @@ document.addEventListener('DOMContentLoaded', function () {
 
 
     // setup lightbox links
-    Shadowbox.init({
-        skipSetup:      true,
-        handleOversize: 'drag'
-    });
-    Shadowbox.setup('article.l-screenshots section a');
+    var thumbnails = document.querySelectorAll('article.l-screenshots section a');
+
+    for (var numThumbnails = thumbnails.length, j = 0; j < numThumbnails; j++) {
+        // replace image with retina version?
+        var pixelRatio = !!window.devicePixelRatio ? window.devicePixelRatio : 1;
+        if (pixelRatio >= 2) {
+            var img = thumbnails[j].querySelector('img');
+            img.setAttribute('src', img.getAttribute('data-src2x'));
+        }
+
+        // attach click listener
+        thumbnails[j].addEventListener('click', function (event) {
+            event.preventDefault();
+
+            // load shadowbox script?
+            if (document.getElementById('shadowbox_js') === null) {
+                var script = document.createElement('script');
+                script.id = 'shadowbox_js';
+                script.src = '/static/js/min/shadowbox.js';
+                script.onload = function () {
+                    // initialise shadowbox on thumbnails
+                    Shadowbox.init({
+                        skipSetup:      true,
+                        handleOversize: 'resize'
+                    });
+                    Shadowbox.setup('article.l-screenshots section a');
+
+                    // refire event on original target
+                    if (event.target.dispatchEvent) {
+                        var evt = document.createEvent('MouseEvents');
+                        evt.initEvent("click", true, true);
+                        event.target.dispatchEvent(evt);
+
+                    } else if (event.target.fireEvent) {
+                        event.target.fireEvent('on' + event.eventType, event);
+                    }
+                };
+            }
+
+            try {
+                document.head.appendChild(script);
+            } catch (e) {
+
+            }
+
+            return false;
+        });
+    }
 });

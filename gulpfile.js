@@ -27,9 +27,16 @@ gulp.task('clean_js', function () {
 gulp.task('js', ['clean_js'], function () {
     'use strict';
 
+    gulp.src(
+        [
+            './static/js/shadowbox.js'
+        ])
+        .pipe(concat('shadowbox.js'))
+        .pipe(uglify())
+        .pipe(gulp.dest('./static/js/min'));
+
     return gulp.src(
         [
-            './static/js/shadowbox.js',
             './static/js/base.js'
         ])
         .pipe(concat('all.js'))
@@ -104,5 +111,5 @@ gulp.task('img', function () {
 
 
 gulp.task('default', [
-    'js', 'css', 'html'
+    'js', 'css', 'html', 'img'
 ]);

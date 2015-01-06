@@ -39,11 +39,12 @@ def index():
 
     if commits is None:
         # get recent commits, store in cache
+        enzymeproject_commits = get_commits_feed("http://github.com/dannyakakong/enzymeproject/commits/master.atom")
         enzyme_commits = get_commits_feed("http://github.com/dannyakakong/Enzyme/commits/master.atom")
         digest_commits = get_commits_feed("http://github.com/dannyakakong/Commit-Digest/commits/master.atom")
 
         # merge feeds together
-        commits = enzyme_commits + digest_commits
+        commits = enzymeproject_commits + enzyme_commits + digest_commits
         commits = sorted(
             commits,
             key=lambda k: k["date"],
