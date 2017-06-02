@@ -5,6 +5,7 @@ var concat          = require('gulp-concat');
 var header          = require('gulp-header');
 var uglify          = require('gulp-uglify');
 var stylus          = require('gulp-stylus');
+var nib             = require('nib');
 var autoprefixer    = require('gulp-autoprefixer');
 var minifyCSS       = require('gulp-minify-css');
 var cleanhtml       = require('gulp-cleanhtml');
@@ -16,7 +17,7 @@ gulp.task('clean_js', function () {
 
     return gulp.src(
         [
-            './static/js/min'
+            './enzymeproject/static/js/min'
         ],
         {
             read: false
@@ -29,20 +30,20 @@ gulp.task('js', ['clean_js'], function () {
 
     gulp.src(
         [
-            './static/js/shadowbox.js'
+            './enzymeproject/static/js/shadowbox.js'
         ])
         .pipe(concat('shadowbox.js'))
         .pipe(uglify())
-        .pipe(gulp.dest('./static/js/min'));
+        .pipe(gulp.dest('./enzymeproject/static/js/min'));
 
     return gulp.src(
         [
-            './static/js/base.js'
+            './enzymeproject/static/js/base.js'
         ])
         .pipe(concat('all.js'))
         .pipe(uglify())
         .pipe(header('// enzyme-project.org ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '') + '\n'))
-        .pipe(gulp.dest('./static/js/min'));
+        .pipe(gulp.dest('./enzymeproject/static/js/min'));
 });
 
 
@@ -51,7 +52,7 @@ gulp.task('clean_css', function () {
 
     return gulp.src(
         [
-            './static/css/min'
+            './enzymeproject/static/css/min'
         ],
         {
             read: false
@@ -64,18 +65,16 @@ gulp.task('css', ['clean_css'], function () {
 
     return gulp.src(
         [
-            './static/css/style.styl'
+            './enzymeproject/static/css/style.styl'
         ])
+        .pipe(stylus({ use: nib(), compress: true }))
         .pipe(concat('all.css'))
-        .pipe(stylus({
-            use: ['nib']
-        }))
         .pipe(autoprefixer('last 1 version', '> 1%', 'ie 8', 'ie 7'))
         .pipe(minifyCSS({
             'removeEmpty': true
         }))
         .pipe(header('/* enzyme-project.org ' + new Date().toISOString().replace(/T/, ' ').replace(/\..+/, '') + '*/\n'))
-        .pipe(gulp.dest('./static/css/min'));
+        .pipe(gulp.dest('./enzymeproject/static/css/min'));
 });
 
 
@@ -84,7 +83,7 @@ gulp.task('clean_html', function () {
 
     return gulp.src(
         [
-            './templates/min'
+            './enzymeproject/templates/min'
         ],
         {
             read: false
@@ -95,18 +94,18 @@ gulp.task('clean_html', function () {
 gulp.task('html', ['clean_html'], function () {
     'use strict';
 
-    return gulp.src('./templates/**/*.html')
+    return gulp.src('./enzymeproject/templates/**/*.html')
         .pipe(cleanhtml())
-        .pipe(gulp.dest('./templates/min'));
+        .pipe(gulp.dest('./enzymeproject/templates/min'));
 });
 
 
 gulp.task('img', function () {
     'use strict';
 
-    return gulp.src('./static/img/**/*')
+    return gulp.src('./enzymeproject/static/img/**/*')
         .pipe(imagemin())
-        .pipe(gulp.dest('./static/img'));
+        .pipe(gulp.dest('./enzymeproject/static/img'));
 });
 
 

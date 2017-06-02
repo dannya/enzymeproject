@@ -1,5 +1,3 @@
-__author__ = "dannya"
-
 import urllib2
 import xml.etree.ElementTree as ET
 
@@ -25,7 +23,7 @@ def parse_date(date_string):
         return None
 
 
-def get_commits_feed(feed_url, limit=None):
+def get_commits_feed(feed_url):
     # load commits feed data
     response = urllib2.urlopen(feed_url)
     xml_text = response.read()
@@ -36,6 +34,7 @@ def get_commits_feed(feed_url, limit=None):
 
     # iterate and process into usable data structure
     commits = []
+
     for entry in entries:
         try:
             # parse the author data separately, as it can sometimes be empty,
