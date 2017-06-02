@@ -1,25 +1,25 @@
 import datetime
 import humanize
 import json
+import memcache
 import requests
-from memcache import memcache
 
 from flask import (
     Flask, render_template,
 )
 
-from enzymeproject.feed import get_commits_feed
+from feed import get_commits_feed
 
 
 app = Flask(__name__)
-app.config["TESTING"] = False
+app.config["DEBUG"] = True
 app.config["STATIC_MINIFY_FILENAME"] = {
     "js/":  "js/min/",
     "css/": "css/min/",
 }
 
 # set template directory (original vs. minified)
-if not app.config["TESTING"]:
+if not app.config["DEBUG"]:
     app.template_folder += "/min"
 
 
@@ -110,5 +110,4 @@ def index():
 
 
 if __name__ == "__main__":
-    app.debug = app.config["TESTING"]
     app.run()

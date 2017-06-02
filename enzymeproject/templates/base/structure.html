@@ -8,11 +8,7 @@
         <meta name="viewport" content="width=device-width" />
         <meta name="google-site-verification" content="beTdAhx0raFrnhbZNxbSm063fSA6hDg5m81DHc9exU0" />
 
-    {% if config.TESTING %}
-        <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css', subdomain='s0') }}" />
-    {% else %}
         <link rel="stylesheet" href="{{ url_for('static', filename='css/min/all.css', subdomain='s0') }}" />
-    {% endif %}
     </head>
 
     <body>
@@ -22,14 +18,9 @@
 
         {% block footer %}{% endblock footer %}
 
-    {% if config.TESTING %}
-        <script src="{{ url_for('static', filename='js/shadowbox.js', subdomain='s1') }}"></script>
-        <script src="{{ url_for('static', filename='js/base.js', subdomain='s1') }}"></script>
-    {% else %}
         <script src="{{ url_for('static', filename='js/min/all.js', subdomain='s1') }}"></script>
-    {% endif %}
 
-    {% if not config.TESTING %}
+    {% if not config.DEBUG %}
         <script>
               (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
               (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
@@ -41,7 +32,7 @@
         </script>
     {% endif %}
 
-    {% if config.TESTING %}
+    {% if config.DEBUG %}
         <div class="screen">
             <span class="screen_tiny">screen_tiny</span>
             <span class="screen_mini">screen_mini</span>
